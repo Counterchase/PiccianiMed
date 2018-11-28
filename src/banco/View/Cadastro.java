@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package banco;
+package banco.View;
 
+import banco.AdminTableModel;
+import banco.Banco;
+import banco.CadastroClinica;
+import banco.CadastroMedico;
+import banco.ClinicaTableModel;
+import banco.MedicoTableModel;
 import banco.Model.Admin;
 import banco.Model.Medico;
 import banco.Model.Clinica;
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +38,7 @@ import sun.swing.table.DefaultTableCellHeaderRenderer;
  *
  * @author IFMS
  */
-public class CadastroAdm extends javax.swing.JFrame {
+public class Cadastro extends javax.swing.JFrame {
 
     private Connection conn;
 
@@ -44,8 +49,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     private List<Admin> ladmin;
 
     /**
-     * ALINHANOD TABELAS
-     * =============================================================================================================================*
+     * ALINHANOD TABELAS =============================================================================================================================*
      */
     public void alinharTbAdmins(JTable tb) {
         AdminTableModel modeloAdmin = new AdminTableModel();
@@ -97,7 +101,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             System.exit(-1);
         }
 
-        String sql = "SELECT idadmin, nome, login, senha, adm FROM Admin";
+        String sql = "SELECT idadmin, nome, login, senha FROM Admin";
         System.out.println("sql: " + sql);
 
         //atravez desse objeto usamos comandos sql
@@ -111,14 +115,12 @@ public class CadastroAdm extends javax.swing.JFrame {
             System.out.print("nome: " + res.getString("nome"));
             System.out.print("login: " + res.getString("login"));
             System.out.print("senha: " + res.getString("senha"));
-            System.out.print("adm: " + res.getInt("adm"));
 
             Admin a = new Admin();
             a.setIdadmin(res.getInt("idadmin"));
             a.setNome(res.getString("nome"));
             a.setLogin(res.getString("login"));
             a.setSenha(res.getString("senha"));
-            a.setAdm(res.getInt("adm"));
 
             Admins.add(a);
         }
@@ -217,7 +219,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             System.exit(-1);
         }
 
-        String sql = "SELECT idadmin, nome,login, senha, adm FROM admin";
+        String sql = "SELECT idadmin, nome,login, senha FROM admin";
 
         System.out.println("sql: " + sql);
         Statement stmt = conn.createStatement();
@@ -229,14 +231,12 @@ public class CadastroAdm extends javax.swing.JFrame {
             System.out.println("Nome:  " + res.getString("nome"));
             System.out.println("Login:  " + res.getString("login"));
             System.out.println("Senha:  " + res.getString("senha"));
-            System.out.println("Adm:  " + res.getInt("adm"));
 
             Admin b = new Admin();
             b.setIdadmin(res.getInt("idadmin"));
             b.setNome(res.getString("nome"));
             b.setLogin(res.getString("login"));
             b.setSenha(res.getString("senha"));
-            b.setAdm(res.getInt("adm"));
 
             Admins.add(b);
 
@@ -278,7 +278,7 @@ public class CadastroAdm extends javax.swing.JFrame {
 
     /*==========================================================================================================================*/
  /*INICIALIZANDO COMPONENTESS====================================================================================================================*/
-    public CadastroAdm() {
+    public Cadastro() {
         initComponents();
         setLocationRelativeTo(null);
         medicos = new ArrayList<>();
@@ -288,28 +288,28 @@ public class CadastroAdm extends javax.swing.JFrame {
         try {
             Admins = listarTbAdmin();
         } catch (SQLException ex) {
-            Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             Clinicas = listarTbClinica();
         } catch (SQLException ex) {
-            Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             medicos = listarTbMedico();
         } catch (SQLException ex) {
-            Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             lclinica = listarClinicas();
         } catch (SQLException ex) {
-            Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
             ladmin = listarAdmins();
         } catch (SQLException ex) {
-            Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Cadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         AdminTableModel modeloAdmin = new AdminTableModel();
@@ -371,6 +371,19 @@ public class CadastroAdm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        admin = new javax.swing.JPanel();
+        txtNomeAdmin = new javax.swing.JTextField();
+        txtLoginAdmin = new javax.swing.JTextField();
+        txtSenhaAdmin = new javax.swing.JTextField();
+        btnCadastrarAdmin = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbAdmin = new javax.swing.JTable();
+        btnExcluirAdmin = new javax.swing.JButton();
+        btnEditarAdmin = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         Menu = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -407,25 +420,123 @@ public class CadastroAdm extends javax.swing.JFrame {
         txtNomeMedico = new javax.swing.JTextField();
         jButton1Medico = new javax.swing.JButton();
         txtCpfMedico = new javax.swing.JFormattedTextField();
-        admin = new javax.swing.JPanel();
-        txtNomeAdmin = new javax.swing.JTextField();
-        txtLoginAdmin = new javax.swing.JTextField();
-        btnCadastrarAdmin = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbAdmin = new javax.swing.JTable();
-        btnExcluirAdmin = new javax.swing.JButton();
-        btnEditarAdmin = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        chkAdm = new javax.swing.JCheckBox();
-        txtSenhaAdmin = new javax.swing.JPasswordField();
-        txtSenhaAdmin2 = new javax.swing.JPasswordField();
-        jLabel16 = new javax.swing.JLabel();
+
+        txtNomeAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeAdminActionPerformed(evt);
+            }
+        });
+
+        txtLoginAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLoginAdminActionPerformed(evt);
+            }
+        });
+
+        btnCadastrarAdmin.setText("Cadastrar");
+        btnCadastrarAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarAdminActionPerformed(evt);
+            }
+        });
+
+        tbAdmin.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbAdmin);
+
+        btnExcluirAdmin.setText("Excluir");
+        btnExcluirAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirAdminActionPerformed(evt);
+            }
+        });
+
+        btnEditarAdmin.setText("Editar");
+        btnEditarAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarAdminActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Nome:");
+
+        jLabel2.setText("Login:");
+
+        jLabel3.setText("Senha:");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setText("Cadastro de Admins");
+
+        javax.swing.GroupLayout adminLayout = new javax.swing.GroupLayout(admin);
+        admin.setLayout(adminLayout);
+        adminLayout.setHorizontalGroup(
+            adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(adminLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(adminLayout.createSequentialGroup()
+                        .addComponent(btnExcluirAdmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 454, Short.MAX_VALUE)
+                        .addComponent(btnEditarAdmin))
+                    .addGroup(adminLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNomeAdmin))
+                    .addGroup(adminLayout.createSequentialGroup()
+                        .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSenhaAdmin)
+                            .addComponent(txtLoginAdmin)))
+                    .addGroup(adminLayout.createSequentialGroup()
+                        .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(btnCadastrarAdmin))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        adminLayout.setVerticalGroup(
+            adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(adminLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addGap(21, 21, 21)
+                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNomeAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(adminLayout.createSequentialGroup()
+                        .addComponent(txtLoginAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtSenhaAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnExcluirAdmin)
+                            .addComponent(btnEditarAdmin))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCadastrarAdmin))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         Menu.setBackground(new java.awt.Color(255, 255, 255));
@@ -452,7 +563,7 @@ public class CadastroAdm extends javax.swing.JFrame {
                     .addGroup(MenuLayout.createSequentialGroup()
                         .addGap(301, 301, 301)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,10 +571,8 @@ public class CadastroAdm extends javax.swing.JFrame {
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLogout)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
-
-        btnLogout.getAccessibleContext().setAccessibleDescription("\n");
 
         jTabbedPane1.addTab("<html><b>Menu", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/icons8-mais-filled-24.png")), Menu); // NOI18N
 
@@ -532,7 +641,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             .addGroup(clinicaLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(clinicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
                     .addGroup(clinicaLayout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -541,7 +650,7 @@ public class CadastroAdm extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addGroup(clinicaLayout.createSequentialGroup()
                         .addComponent(btnExcluirClinica)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 517, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 518, Short.MAX_VALUE)
                         .addComponent(btnEditarClinica))
                     .addGroup(clinicaLayout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -577,7 +686,7 @@ public class CadastroAdm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCadastrarClinica)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -672,7 +781,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             .addGroup(medicoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(medicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, medicoLayout.createSequentialGroup()
                         .addComponent(btnExcluirMedico)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -699,10 +808,10 @@ public class CadastroAdm extends javax.swing.JFrame {
                         .addGroup(medicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel10)
                             .addComponent(jLabel13))
-                        .addGap(2, 2, 2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(medicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCrmMedico)
-                            .addComponent(txtNomeMedico)))
+                            .addComponent(txtNomeMedico)
+                            .addComponent(txtCrmMedico)))
                     .addGroup(medicoLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -745,169 +854,467 @@ public class CadastroAdm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1Medico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("<html><b>Médico</b>", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/iconfinder_49_3678412.png")), medico, "Cadastre um Médico\n"); // NOI18N
 
-        admin.setBackground(new java.awt.Color(255, 255, 255));
-
-        txtNomeAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeAdminActionPerformed(evt);
-            }
-        });
-
-        txtLoginAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLoginAdminActionPerformed(evt);
-            }
-        });
-
-        btnCadastrarAdmin.setText("Cadastrar");
-        btnCadastrarAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarAdminActionPerformed(evt);
-            }
-        });
-
-        tbAdmin.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(tbAdmin);
-
-        btnExcluirAdmin.setText("Excluir");
-        btnExcluirAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirAdminActionPerformed(evt);
-            }
-        });
-
-        btnEditarAdmin.setText("Editar");
-        btnEditarAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarAdminActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Nome:");
-
-        jLabel2.setText("Login:");
-
-        jLabel3.setText("Senha:");
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setText("Cadastro de Admins");
-
-        chkAdm.setText("ADMINISTRADOR?");
-        chkAdm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkAdmActionPerformed(evt);
-            }
-        });
-
-        txtSenhaAdmin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSenhaAdminActionPerformed(evt);
-            }
-        });
-
-        txtSenhaAdmin2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSenhaAdmin2ActionPerformed(evt);
-            }
-        });
-
-        jLabel16.setText("Confirma senha:");
-
-        javax.swing.GroupLayout adminLayout = new javax.swing.GroupLayout(admin);
-        admin.setLayout(adminLayout);
-        adminLayout.setHorizontalGroup(
-            adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(adminLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(adminLayout.createSequentialGroup()
-                        .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
-                            .addGroup(adminLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNomeAdmin))
-                            .addGroup(adminLayout.createSequentialGroup()
-                                .addComponent(btnExcluirAdmin)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEditarAdmin))
-                            .addGroup(adminLayout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(adminLayout.createSequentialGroup()
-                                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtLoginAdmin)
-                                    .addGroup(adminLayout.createSequentialGroup()
-                                        .addComponent(txtSenhaAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel16)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtSenhaAdmin2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())
-                    .addGroup(adminLayout.createSequentialGroup()
-                        .addComponent(btnCadastrarAdmin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(chkAdm)
-                        .addGap(85, 85, 85))))
-        );
-        adminLayout.setVerticalGroup(
-            adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(adminLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
-                .addGap(21, 21, 21)
-                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNomeAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLoginAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtSenhaAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSenhaAdmin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExcluirAdmin)
-                    .addComponent(btnEditarAdmin))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCadastrarAdmin)
-                    .addComponent(chkAdm))
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("<html><b>Admin\n", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/iconfinder_ajax-admin_3018587.png")), admin); // NOI18N
-
         getContentPane().add(jTabbedPane1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAdminActionPerformed
+        conn = Banco.conecta();
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+
+            }
+
+            String nome = "'" + txtNomeAdmin.getText() + "'";
+            String login = "'" + txtLoginAdmin.getText() + "'";
+            String senha = "'" + txtSenhaAdmin.getText() + "'";
+
+            int k = tbAdmin.getSelectedRow();
+            // System.out.println(k);
+
+            int i = ((AdminTableModel) tbAdmin.getModel()).getListaAdmins().get(k).getIdadmin();
+
+            Statement stmt = conn.createStatement();
+            String sql = "UPDATE admin SET nome = " + nome + ",login = " + login + ",senha = " + senha + " WHERE idadmin = " + i + "";
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            conn.close();
+
+            JOptionPane.showMessageDialog(null, "Admin Editado!");
+
+            String Mostrar = " ";
+            txtNomeAdmin.setText(Mostrar);
+            txtLoginAdmin.setText(Mostrar);
+            txtSenhaAdmin.setText(Mostrar);
+
+            Admins = listarTbAdmin();
+            AdminTableModel modelo = new AdminTableModel();
+            modelo.setListaAdmins(Admins);
+            tbAdmin.setModel(modelo);
+
+            combAdminMedico.removeAllItems();
+
+            ladmin = listarAdmins();
+
+            for (int i2 = 0; i2 < ladmin.size(); i2++) {
+                combAdminMedico.addItem(ladmin.get(i2));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditarAdminActionPerformed
+
+    private void btnExcluirAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirAdminActionPerformed
+        conn = Banco.conecta();
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+
+            }
+
+            int k = tbAdmin.getSelectedRow();
+            // System.out.println(k);
+            int i = ((AdminTableModel) tbAdmin.getModel()).getListaAdmins().get(k).getIdadmin();
+
+            Statement stmt = conn.createStatement();
+            String sql = "Delete from admin where idadmin = " + i + " ";
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            conn.close();
+
+            JOptionPane.showMessageDialog(null, "Admin Apagado!");
+
+            String Mostrar = " ";
+            txtNomeAdmin.setText(Mostrar);
+            txtLoginAdmin.setText(Mostrar);
+            txtSenhaAdmin.setText(Mostrar);
+
+            Admins = listarTbAdmin();
+            AdminTableModel modelo = new AdminTableModel();
+            modelo.setListaAdmins(Admins);
+            tbAdmin.setModel(modelo);
+
+            combAdminMedico.removeAllItems();
+            ladmin = listarAdmins();
+
+            for (int i3 = 0; i3 < ladmin.size(); i3++) {
+                combAdminMedico.addItem(ladmin.get(i3));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExcluirAdminActionPerformed
+
+    private void btnCadastrarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarAdminActionPerformed
+
+        conn = Banco.conecta();
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+            }
+
+            String nome = "'" + txtNomeAdmin.getText() + "'";
+            String login = "'" + txtLoginAdmin.getText() + "'";
+            String senha = "'" + txtSenhaAdmin.getText() + "'";
+
+            String sql = "INSERT INTO admin(nome, login, senha) VALUES ("
+                    + "" + nome + "," + login + "," + senha + ")";
+            System.out.println("sql: " + sql);
+
+            //atravez desse objeto usamos comandos sql
+            Statement stmt = conn.createStatement();
+
+            //select
+            //stmt.executeQuery(sql);
+            //retorna um conjunto de dados , sempre q for fazer insert usar o executeUpdate : inset, update, delete
+            stmt.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Admin" + nome + "cadastrado!!");
+
+            //encerrou a conexão
+            stmt.close();
+            conn.close();
+
+            String Mostrar = " ";
+            txtNomeAdmin.setText(Mostrar);
+            txtLoginAdmin.setText(Mostrar);
+            txtSenhaAdmin.setText(Mostrar);
+
+            Admins = listarTbAdmin();
+
+            AdminTableModel modelo = new AdminTableModel();
+            modelo.setListaAdmins(Admins);
+
+            tbAdmin.setModel(modelo);
+
+            for (int i = 0; i < ladmin.size(); i++) {
+                combAdminMedico.addItem(ladmin.get(i));
+
+            }
+            combAdminMedico.removeAllItems();
+            ladmin = listarAdmins();
+
+            for (int i = 0; i < ladmin.size(); i++) {
+                combAdminMedico.addItem(ladmin.get(i));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCadastrarAdminActionPerformed
+
+    private void txtLoginAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLoginAdminActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLoginAdminActionPerformed
+
+    private void txtNomeAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeAdminActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeAdminActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+
+        Login init = new Login();
+        init.setVisible(true); //torna visivel frame de cadastro
+        setVisible(false);//tira a tela de login
+        dispose(); //fecha o form de login (quem chamou)
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnExcluirClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirClinicaActionPerformed
+        conn = Banco.conecta();
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+
+            }
+
+            int k = tbClinica.getSelectedRow();
+            if (k == -1) {
+                JOptionPane.showMessageDialog(null, "Selecione um Admin para deletar");
+            } else {
+                // System.out.println(k);
+                int i = ((ClinicaTableModel) tbClinica.getModel()).getListaclinicas().get(k).getIdclinica();
+
+                Statement stmt = conn.createStatement();
+                String sql = "Delete from clinica where idclinica = " + i + " ";
+                stmt.executeUpdate(sql);
+
+                stmt.close();
+                conn.close();
+
+                JOptionPane.showMessageDialog(null, "Clinica Apagada!");
+
+                String Mostrar = " ";
+                txtNomeAdmin.setText(Mostrar);
+                txtCnpjClinica.setText(Mostrar);
+                txtCidadeClinica.setText(Mostrar);
+
+                Clinicas = listarTbClinica();
+                ClinicaTableModel modelo = new ClinicaTableModel();
+                modelo.setListaClinicas(Clinicas);
+                tbClinica.setModel(modelo);
+
+                combClinicaMedico.removeAllItems();
+
+                lclinica = listarClinicas();
+
+                for (int i2 = 0; i2 < lclinica.size(); i2++) {
+                    combClinicaMedico.addItem(lclinica.get(i2));
+
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExcluirClinicaActionPerformed
+
+    private void btnEditarClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClinicaActionPerformed
+
+        conn = Banco.conecta();
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+
+            }
+
+            String nome = "'" + txtNomeClinica.getText() + "'";
+            String cnpj = "'" + txtCnpjClinica.getText() + "'";
+            String cidade = "'" + txtCidadeClinica.getText() + "'";
+
+            int k = tbClinica.getSelectedRow();
+            if (k == -1) {
+                JOptionPane.showMessageDialog(null, "Porfavor Complete os Campos e Selecione a Linha na Tabela a ser editada e em Seguida clicke no botao Editar");
+            } else {
+                // System.out.println(k);
+
+                int i = ((ClinicaTableModel) tbClinica.getModel()).getListaclinicas().get(k).getIdclinica();
+
+                Statement stmt = conn.createStatement();
+                String sql = "UPDATE clinica SET nome = " + nome + ",cnpj = " + cnpj + ",cidadeclinica = " + cidade + " WHERE idclinica = " + i + "";
+                stmt.executeUpdate(sql);
+
+                stmt.close();
+                conn.close();
+
+                JOptionPane.showMessageDialog(null, "Clinica Editada!");
+
+                String Mostrar = " ";
+                txtNomeClinica.setText(Mostrar);
+                txtCnpjClinica.setText(Mostrar);
+                txtCidadeClinica.setText(Mostrar);
+
+                Clinicas = listarTbClinica();
+                ClinicaTableModel modelo = new ClinicaTableModel();
+                modelo.setListaClinicas(Clinicas);
+                tbClinica.setModel(modelo);
+
+                combClinicaMedico.removeAllItems();
+
+                lclinica = listarClinicas();
+
+                for (int i2 = 0; i2 < lclinica.size(); i2++) {
+                    combClinicaMedico.addItem(lclinica.get(i2));
+
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditarClinicaActionPerformed
+
+    private void txtNomeClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeClinicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeClinicaActionPerformed
+
+    private void txtCnpjClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCnpjClinicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCnpjClinicaActionPerformed
+
+    private void btnCadastrarClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarClinicaActionPerformed
+        conn = Banco.conecta();
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+            }
+
+            String nome = "'" + txtNomeClinica.getText() + "'";
+            String cnpj = "'" + txtCnpjClinica.getText() + "'";
+            String cidade = "'" + txtCidadeClinica.getText() + "'";
+
+            if (txtNomeClinica.getText().isEmpty() || txtCnpjClinica.getText().isEmpty() || txtCidadeClinica.getText().isEmpty()) {
+
+                JOptionPane.showMessageDialog(null, "Preencha Todos os Campos!!");
+            } else {
+
+                String sql = "INSERT INTO Clinica (nome, cnpj, cidadeclinica) VALUES ("
+                        + "" + nome + "," + cnpj + "," + cidade + ")";
+                System.out.println("sql: " + sql);
+
+                //atravez desse objeto usamos comandos sql
+                Statement stmt = conn.createStatement();
+
+                //select
+                //stmt.executeQuery(sql);
+                //retorna um conjunto de dados , sempre q for fazer insert usar o executeUpdate : inset, update, delete
+                stmt.executeUpdate(sql);
+                JOptionPane.showMessageDialog(null, "Clínica  " + nome + "  cadastrada!!");
+
+                //encerrou a conexão
+                stmt.close();
+                conn.close();
+
+                String Mostrar = " ";
+                txtNomeClinica.setText(Mostrar);
+                txtCnpjClinica.setText(Mostrar);
+                txtCidadeClinica.setText(Mostrar);
+
+                Clinicas = listarTbClinica();
+
+                ClinicaTableModel modelo = new ClinicaTableModel();
+                modelo.setListaClinicas(Clinicas);
+
+                tbClinica.setModel(modelo);
+
+                combClinicaMedico.removeAllItems();
+
+                lclinica = listarClinicas();
+
+                for (int i = 0; i < lclinica.size(); i++) {
+                    combClinicaMedico.addItem(lclinica.get(i));
+
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCadastrarClinicaActionPerformed
+
+    private void txtDataNascimentoMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataNascimentoMedicoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDataNascimentoMedicoActionPerformed
+
+    private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
+
+        conn = Banco.conecta();
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+
+            }
+
+            int k = tbMedico.getSelectedRow();
+            if (k == -1) {
+                JOptionPane.showMessageDialog(null, "Selecione um Admin para deletar");
+            } else {
+                // System.out.println(k);
+                int i = ((MedicoTableModel) tbMedico.getModel()).getListamedicos().get(k).getIdmedico();
+
+                Statement stmt = conn.createStatement();
+                String sql = "Delete from medico where idmedico = " + i + " ";
+                stmt.executeUpdate(sql);
+
+                stmt.close();
+                conn.close();
+
+                JOptionPane.showMessageDialog(null, "Médico(a) Apagado!");
+
+                String Mostrar = " ";
+                txtNomeMedico.setText(Mostrar);
+                txtCpfMedico.setText(Mostrar);
+                txtCrmMedico.setText(Mostrar);
+
+                medicos = listarTbMedico();
+                MedicoTableModel modelo = new MedicoTableModel();
+                modelo.setListamedicos(medicos);
+                tbMedico.setModel(modelo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExcluirMedicoActionPerformed
+
+    private void btnEditarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarMedicoActionPerformed
+        conn = Banco.conecta();
+
+        try {
+            if (conn == null || conn.isClosed()) {
+                System.out.println("erro ao conectar ao banco de dados");
+                System.exit(-1);
+
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date aux = txtDataNascimentoMedico.getDate();
+
+            String nome = "'" + txtNomeMedico.getText() + "'";
+            String crm = "'" + txtCrmMedico.getText() + "'";
+            String cpf = "'" + txtCpfMedico.getText() + "'";
+            String dataNasc = "'" + sdf.format(aux) + "'";
+
+            int k = tbMedico.getSelectedRow();
+            if (k == -1) {
+                JOptionPane.showMessageDialog(null, "Porfavor Complete os Campos e Selecione a Linha na Tabela a ser editada e em Seguida clicke no botao Editar");
+            } else {
+                // System.out.println(k);
+                int i = ((MedicoTableModel) tbMedico.getModel()).getListamedicos().get(k).getIdmedico();
+
+                Statement stmt = conn.createStatement();
+                String sql = "UPDATE medico SET nome = " + nome + ",crm = " + crm + ",cpf = " + cpf + ",datanascimento = " + dataNasc + "WHERE idmedico = " + i + "";
+                stmt.executeUpdate(sql);
+
+                stmt.close();
+                conn.close();
+
+                JOptionPane.showMessageDialog(null, "Médico(a) Editado!");
+
+                String Mostrar = " ";
+                txtNomeMedico.setText(Mostrar);
+                txtCpfMedico.setText(Mostrar);
+                txtCrmMedico.setText(Mostrar);
+
+                medicos = listarTbMedico();
+                MedicoTableModel modelo = new MedicoTableModel();
+                modelo.setListamedicos(medicos);
+                tbMedico.setModel(modelo);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditarMedicoActionPerformed
+
+    private void combClinicaMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combClinicaMedicoActionPerformed
+
+    }//GEN-LAST:event_combClinicaMedicoActionPerformed
+
+    private void txtNomeMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeMedicoActionPerformed
+
+    }//GEN-LAST:event_txtNomeMedicoActionPerformed
 
     private void jButton1MedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1MedicoActionPerformed
         conn = Banco.conecta();
@@ -970,514 +1377,9 @@ public class CadastroAdm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1MedicoActionPerformed
 
-    private void txtNomeMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeMedicoActionPerformed
-
-    }//GEN-LAST:event_txtNomeMedicoActionPerformed
-
-    private void combClinicaMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combClinicaMedicoActionPerformed
-
-    }//GEN-LAST:event_combClinicaMedicoActionPerformed
-
-    private void btnEditarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarMedicoActionPerformed
-        conn = Banco.conecta();
-
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-
-            }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            Date aux = txtDataNascimentoMedico.getDate();
-
-            String nome = "'" + txtNomeMedico.getText() + "'";
-            String crm = "'" + txtCrmMedico.getText() + "'";
-            String cpf = "'" + txtCpfMedico.getText() + "'";
-            String dataNasc = "'" + sdf.format(aux) + "'";
-
-            int k = tbMedico.getSelectedRow();
-            if (k == -1) {
-                JOptionPane.showMessageDialog(null, "Porfavor Complete os Campos e Selecione a Linha na Tabela a ser editada e em Seguida clicke no botao Editar");
-            } else {
-                // System.out.println(k);
-                int i = ((MedicoTableModel) tbMedico.getModel()).getListamedicos().get(k).getIdmedico();
-
-                Statement stmt = conn.createStatement();
-                String sql = "UPDATE medico SET nome = " + nome + ",crm = " + crm + ",cpf = " + cpf + ",datanascimento = " + dataNasc + "WHERE idmedico = " + i + "";
-                stmt.executeUpdate(sql);
-
-                stmt.close();
-                conn.close();
-
-                JOptionPane.showMessageDialog(null, "Médico(a) Editado!");
-
-                String Mostrar = " ";
-                txtNomeMedico.setText(Mostrar);
-                txtCpfMedico.setText(Mostrar);
-                txtCrmMedico.setText(Mostrar);
-
-                medicos = listarTbMedico();
-                MedicoTableModel modelo = new MedicoTableModel();
-                modelo.setListamedicos(medicos);
-                tbMedico.setModel(modelo);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditarMedicoActionPerformed
-
-    private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
-
-        conn = Banco.conecta();
-
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-
-            }
-
-            int k = tbMedico.getSelectedRow();
-            if (k == -1) {
-                JOptionPane.showMessageDialog(null, "Selecione um Admin para deletar");
-            } else {
-                // System.out.println(k);
-                int i = ((MedicoTableModel) tbMedico.getModel()).getListamedicos().get(k).getIdmedico();
-
-                Statement stmt = conn.createStatement();
-                String sql = "Delete from medico where idmedico = " + i + " ";
-                stmt.executeUpdate(sql);
-
-                stmt.close();
-                conn.close();
-
-                JOptionPane.showMessageDialog(null, "Médico(a) Apagado!");
-
-                String Mostrar = " ";
-                txtNomeMedico.setText(Mostrar);
-                txtCpfMedico.setText(Mostrar);
-                txtCrmMedico.setText(Mostrar);
-
-                medicos = listarTbMedico();
-                MedicoTableModel modelo = new MedicoTableModel();
-                modelo.setListamedicos(medicos);
-                tbMedico.setModel(modelo);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnExcluirMedicoActionPerformed
-
-    private void txtDataNascimentoMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataNascimentoMedicoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDataNascimentoMedicoActionPerformed
-
-    @SuppressWarnings("empty-statement")
-    private void btnEditarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAdminActionPerformed
-        String Mostrar = null;
-        conn = Banco.conecta();
-
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-
-            }
-
-            String nome = "'" + txtNomeAdmin.getText() + "'";
-            String login = "'" + txtLoginAdmin.getText() + "'";
-            String senha = "'" + txtSenhaAdmin.getText() + "'";
-            Integer adm = 0;
-            if (chkAdm.isSelected()) {
-                adm = 1;
-            } else {
-                adm = 0;
-            };
-
-            int k = tbAdmin.getSelectedRow();
-            if (k == -1) {
-                JOptionPane.showMessageDialog(null, "Porfavor Complete os Campos e Selecione a Linha na Tabela a ser editada e em Seguida clicke no botao Editar");
-                txtSenhaAdmin.setText(Mostrar);
-                txtSenhaAdmin2.setText(Mostrar);
-            } else {
-                // System.out.println(k);
-
-                int i = ((AdminTableModel) tbAdmin.getModel()).getListaAdmins().get(k).getIdadmin();
-
-                try (Statement stmt = conn.createStatement()) {
-                    String sql = "UPDATE admin SET nome = " + nome + ",login = " + login + ",senha = " + senha + ",adm = " + adm + " WHERE idadmin = " + i + "";
-                    stmt.executeUpdate(sql);
-                }
-                conn.close();
-
-                JOptionPane.showMessageDialog(null, "Admin Editado!");
-
-                txtNomeAdmin.setText(Mostrar);
-                txtLoginAdmin.setText(Mostrar);
-                txtSenhaAdmin.setText(Mostrar);
-                txtSenhaAdmin2.setText(Mostrar);
-
-                Admins = listarTbAdmin();
-                AdminTableModel modelo = new AdminTableModel();
-                modelo.setListaAdmins(Admins);
-                tbAdmin.setModel(modelo);
-
-                combAdminMedico.removeAllItems();
-
-                ladmin = listarAdmins();
-
-                for (int i2 = 0; i2 < ladmin.size(); i2++) {
-                    combAdminMedico.addItem(ladmin.get(i2));
-
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditarAdminActionPerformed
-
-    private void btnExcluirAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirAdminActionPerformed
-        conn = Banco.conecta();
-
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-
-            }
-
-            int k = tbAdmin.getSelectedRow();
-            if (k == -1) {
-                JOptionPane.showMessageDialog(null, "Selecione um Admin para deletar");
-            } else {
-
-                // System.out.println(k);
-                int i = ((AdminTableModel) tbAdmin.getModel()).getListaAdmins().get(k).getIdadmin();
-
-                Statement stmt = conn.createStatement();
-                if (i == 1) {
-                    JOptionPane.showMessageDialog(null, "Nao é Possivel apagar o Admin Nativo!");
-                } else {
-
-                    String sql = "Delete from admin where idadmin = " + i + " ";
-                    stmt.executeUpdate(sql);
-                    JOptionPane.showMessageDialog(null, "Admin Apagado!");
-
-                }
-
-                stmt.close();
-                conn.close();
-
-                String Mostrar = " ";
-                txtNomeAdmin.setText(Mostrar);
-                txtLoginAdmin.setText(Mostrar);
-                txtSenhaAdmin.setText(Mostrar);
-
-                Admins = listarTbAdmin();
-                AdminTableModel modelo = new AdminTableModel();
-                modelo.setListaAdmins(Admins);
-                tbAdmin.setModel(modelo);
-
-                combAdminMedico.removeAllItems();
-                ladmin = listarAdmins();
-
-                for (int i3 = 0; i3 < ladmin.size(); i3++) {
-                    combAdminMedico.addItem(ladmin.get(i3));
-
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnExcluirAdminActionPerformed
-
-    @SuppressWarnings("empty-statement")
-    private void btnCadastrarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarAdminActionPerformed
-        String Mostrar = null;
-        conn = Banco.conecta();
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-            }
-
-            String nome = "'" + txtNomeAdmin.getText() + "'";
-            String login = "'" + txtLoginAdmin.getText() + "'";
-            String senha = "'" + txtSenhaAdmin.getText() + "'";
-            String senha2 = "'" + txtSenhaAdmin2.getText() + "'";
-
-            if (senha.equals(senha2)) {
-
-                Integer adm = null;
-                if (chkAdm.isSelected()) {
-                    adm = 1;
-                } else {
-                    adm = 0;
-                };
-
-                if (txtNomeAdmin.getText().isEmpty() || txtLoginAdmin.getText().isEmpty() || txtSenhaAdmin.getText().isEmpty()) {
-
-                    JOptionPane.showMessageDialog(null, "Preencha Todos os Campos!!");
-                } else {
-
-                    String sql = "INSERT INTO admin(nome, login, senha, adm) VALUES ("
-                            + "" + nome + "," + login + "," + senha + "," + adm + ")";
-                    System.out.println("sql: " + sql);
-
-                    //atravez desse objeto usamos comandos sql
-                    Statement stmt = conn.createStatement();
-
-                    //select
-                    //stmt.executeQuery(sql);
-                    //retorna um conjunto de dados , sempre q for fazer insert usar o executeUpdate : inset, update, delete
-                    stmt.executeUpdate(sql);
-                    JOptionPane.showMessageDialog(null, "Admin" + nome + "cadastrado!!");
-
-                    //encerrou a conexão
-                    stmt.close();
-                    conn.close();
-
-                    txtNomeAdmin.setText(Mostrar);
-                    txtLoginAdmin.setText(Mostrar);
-                    txtSenhaAdmin.setText(Mostrar);
-                    txtSenhaAdmin2.setText(Mostrar);
-
-                    Admins = listarTbAdmin();
-
-                    AdminTableModel modelo = new AdminTableModel();
-                    modelo.setListaAdmins(Admins);
-
-                    tbAdmin.setModel(modelo);
-
-                    for (int i = 0; i < ladmin.size(); i++) {
-                        combAdminMedico.addItem(ladmin.get(i));
-
-                    }
-                    combAdminMedico.removeAllItems();
-                    ladmin = listarAdmins();
-
-                    for (int i = 0; i < ladmin.size(); i++) {
-                        combAdminMedico.addItem(ladmin.get(i));
-
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Senhas Não São Iguais!");
-                txtSenhaAdmin.setText(Mostrar);
-                txtSenhaAdmin2.setText(Mostrar);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnCadastrarAdminActionPerformed
-
-    private void txtLoginAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLoginAdminActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLoginAdminActionPerformed
-
-    private void txtNomeAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeAdminActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeAdminActionPerformed
-
-    private void btnCadastrarClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarClinicaActionPerformed
-        conn = Banco.conecta();
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-            }
-
-            String nome = "'" + txtNomeClinica.getText() + "'";
-            String cnpj = "'" + txtCnpjClinica.getText() + "'";
-            String cidade = "'" + txtCidadeClinica.getText() + "'";
-
-            if (txtNomeClinica.getText().isEmpty() || txtCnpjClinica.getText().isEmpty() || txtCidadeClinica.getText().isEmpty()) {
-
-                JOptionPane.showMessageDialog(null, "Preencha Todos os Campos!!");
-            } else {
-
-                String sql = "INSERT INTO Clinica (nome, cnpj, cidadeclinica) VALUES ("
-                        + "" + nome + "," + cnpj + "," + cidade + ")";
-                System.out.println("sql: " + sql);
-
-                //atravez desse objeto usamos comandos sql
-                Statement stmt = conn.createStatement();
-
-                //select
-                //stmt.executeQuery(sql);
-                //retorna um conjunto de dados , sempre q for fazer insert usar o executeUpdate : inset, update, delete
-                stmt.executeUpdate(sql);
-                JOptionPane.showMessageDialog(null, "Clínica  " + nome + "  cadastrada!!");
-
-                //encerrou a conexão
-                stmt.close();
-                conn.close();
-
-                String Mostrar = " ";
-                txtNomeClinica.setText(Mostrar);
-                txtCnpjClinica.setText(Mostrar);
-                txtCidadeClinica.setText(Mostrar);
-
-                Clinicas = listarTbClinica();
-
-                ClinicaTableModel modelo = new ClinicaTableModel();
-                modelo.setListaClinicas(Clinicas);
-
-                tbClinica.setModel(modelo);
-
-                combClinicaMedico.removeAllItems();
-
-                lclinica = listarClinicas();
-
-                for (int i = 0; i < lclinica.size(); i++) {
-                    combClinicaMedico.addItem(lclinica.get(i));
-
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnCadastrarClinicaActionPerformed
-
-    private void txtCnpjClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCnpjClinicaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCnpjClinicaActionPerformed
-
-    private void txtNomeClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeClinicaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeClinicaActionPerformed
-
-    private void btnEditarClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClinicaActionPerformed
-
-        conn = Banco.conecta();
-
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-
-            }
-
-            String nome = "'" + txtNomeClinica.getText() + "'";
-            String cnpj = "'" + txtCnpjClinica.getText() + "'";
-            String cidade = "'" + txtCidadeClinica.getText() + "'";
-
-            int k = tbClinica.getSelectedRow();
-            if (k == -1) {
-                JOptionPane.showMessageDialog(null, "Porfavor Complete os Campos e Selecione a Linha na Tabela a ser editada e em Seguida clicke no botao Editar");
-            } else {
-                // System.out.println(k);
-
-                int i = ((ClinicaTableModel) tbClinica.getModel()).getListaclinicas().get(k).getIdclinica();
-
-                Statement stmt = conn.createStatement();
-                String sql = "UPDATE clinica SET nome = " + nome + ",cnpj = " + cnpj + ",cidadeclinica = " + cidade + " WHERE idclinica = " + i + "";
-                stmt.executeUpdate(sql);
-
-                stmt.close();
-                conn.close();
-
-                JOptionPane.showMessageDialog(null, "Clinica Editada!");
-
-                String Mostrar = " ";
-                txtNomeClinica.setText(Mostrar);
-                txtCnpjClinica.setText(Mostrar);
-                txtCidadeClinica.setText(Mostrar);
-
-                Clinicas = listarTbClinica();
-                ClinicaTableModel modelo = new ClinicaTableModel();
-                modelo.setListaClinicas(Clinicas);
-                tbClinica.setModel(modelo);
-
-                combClinicaMedico.removeAllItems();
-
-                lclinica = listarClinicas();
-
-                for (int i2 = 0; i2 < lclinica.size(); i2++) {
-                    combClinicaMedico.addItem(lclinica.get(i2));
-
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditarClinicaActionPerformed
-
-    private void btnExcluirClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirClinicaActionPerformed
-        conn = Banco.conecta();
-
-        try {
-            if (conn == null || conn.isClosed()) {
-                System.out.println("erro ao conectar ao banco de dados");
-                System.exit(-1);
-
-            }
-
-            int k = tbClinica.getSelectedRow();
-            if (k == -1) {
-                JOptionPane.showMessageDialog(null, "Selecione um Admin para deletar");
-            } else {
-                // System.out.println(k);
-                int i = ((ClinicaTableModel) tbClinica.getModel()).getListaclinicas().get(k).getIdclinica();
-
-                Statement stmt = conn.createStatement();
-                String sql = "Delete from clinica where idclinica = " + i + " ";
-                stmt.executeUpdate(sql);
-
-                stmt.close();
-                conn.close();
-
-                JOptionPane.showMessageDialog(null, "Clinica Apagada!");
-
-                String Mostrar = " ";
-                txtNomeAdmin.setText(Mostrar);
-                txtCnpjClinica.setText(Mostrar);
-                txtCidadeClinica.setText(Mostrar);
-
-                Clinicas = listarTbClinica();
-                ClinicaTableModel modelo = new ClinicaTableModel();
-                modelo.setListaClinicas(Clinicas);
-                tbClinica.setModel(modelo);
-
-                combClinicaMedico.removeAllItems();
-
-                lclinica = listarClinicas();
-
-                for (int i2 = 0; i2 < lclinica.size(); i2++) {
-                    combClinicaMedico.addItem(lclinica.get(i2));
-
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnExcluirClinicaActionPerformed
-
-    private void chkAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAdmActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkAdmActionPerformed
-
     private void txtCpfMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCpfMedicoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCpfMedicoActionPerformed
-
-    private void txtSenhaAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaAdminActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSenhaAdminActionPerformed
-
-    private void txtSenhaAdmin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaAdmin2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSenhaAdmin2ActionPerformed
-
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-
-        Login init = new Login();
-        init.setVisible(true); //torna visivel frame de cadastro
-        setVisible(false);//tira a tela de login
-        dispose(); //fecha o form de login (quem chamou)
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1496,23 +1398,21 @@ public class CadastroAdm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroAdm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroAdm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroAdm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroAdm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroAdm().setVisible(true);
+                new Cadastro().setVisible(true);
             }
         });
     }
@@ -1529,7 +1429,6 @@ public class CadastroAdm extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluirClinica;
     private javax.swing.JButton btnExcluirMedico;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JCheckBox chkAdm;
     private javax.swing.JPanel clinica;
     private javax.swing.JComboBox<Admin> combAdminMedico;
     private javax.swing.JComboBox<Clinica> combClinicaMedico;
@@ -1541,7 +1440,6 @@ public class CadastroAdm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1568,8 +1466,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     private javax.swing.JTextField txtNomeAdmin;
     private javax.swing.JTextField txtNomeClinica;
     private javax.swing.JTextField txtNomeMedico;
-    private javax.swing.JPasswordField txtSenhaAdmin;
-    private javax.swing.JPasswordField txtSenhaAdmin2;
+    private javax.swing.JTextField txtSenhaAdmin;
     // End of variables declaration//GEN-END:variables
 
 }
