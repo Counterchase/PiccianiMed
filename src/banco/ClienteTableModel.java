@@ -34,7 +34,6 @@ public class ClienteTableModel extends AbstractTableModel {
         cabecalho.add("DATA DE NASCIMENTO");
         cabecalho.add("ID CLINICA");
         cabecalho.add("ID MEDICO");
-        cabecalho.add("ID LEITO");
     }
 
     public List<String> getCabecalho() {
@@ -80,8 +79,6 @@ public class ClienteTableModel extends AbstractTableModel {
                 return listaClientes.get(rowIndex).getIdclinica();
             case 6:
                 return listaClientes.get(rowIndex).getIdmedico();
-            case 7:
-                return listaClientes.get(rowIndex).getIdleito();
             default:
                 return null;
         }

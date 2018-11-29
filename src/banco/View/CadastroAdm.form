@@ -115,6 +115,9 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&lt;html&gt;&lt;b&gt;Cliente" toolTip="Cadastre um Cliente&#xa;">
                 <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Cliente"/>
+                <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/banco/IMG/icons8-gest&#xe3;o-de-cliente-filled-24.png"/>
+                </Property>
                 <Property name="tabToolTip" type="java.lang.String" value="Cadastre um Cliente&#xa;"/>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -379,8 +382,8 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="&lt;html&gt;&#xa;&lt;b&gt;Cl&#xed;nica&lt;/b&gt;&#xa;&lt;/html&gt;" toolTip="Cadastre Clinicas&#xa;">
-                <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;b&gt;Cl&#xed;nica&lt;/b&gt;&#xa;&lt;/html&gt;"/>
+              <JTabbedPaneConstraints tabName="&lt;html&gt; &lt;b&gt;Cl&#xed;nica&lt;/b&gt; &lt;/html&gt;" toolTip="Cadastre Clinicas&#xa;">
+                <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt; &lt;b&gt;Cl&#xed;nica&lt;/b&gt; &lt;/html&gt;"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/banco/IMG/iconfinder_hospital-o_1608931 (1).png"/>
                 </Property>
@@ -401,8 +404,18 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtCidadeClinica" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="btnCadastrarClinica" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="btnCadastrarClinica" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtLeitoClinica" min="-2" pref="41" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="btnExcluirClinica" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="517" max="32767" attributes="0"/>
@@ -449,7 +462,11 @@
                           <Component id="btnEditarClinica" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnCadastrarClinica" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnCadastrarClinica" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtLeitoClinica" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" pref="245" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -537,6 +554,18 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarClinicaActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel25">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Leitos Disponiveis:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JFormattedTextField" name="txtLeitoClinica">
+              <Properties>
+                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+                  <Format format="##" subtype="-1" type="0"/>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

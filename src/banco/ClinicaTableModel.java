@@ -30,6 +30,7 @@ public class ClinicaTableModel extends AbstractTableModel {
         cabecalho.add("NOME");
         cabecalho.add("CNPJ");
         cabecalho.add("CIDADE CLINICA");
+        cabecalho.add("LEITO");
     }
 
     @Override
@@ -60,6 +61,8 @@ public class ClinicaTableModel extends AbstractTableModel {
                 return listaclinicas.get(rowIndex).getCnpj();
             case 3:
                 return listaclinicas.get(rowIndex).getCidadeclinica();
+            case 4:
+                return listaclinicas.get(rowIndex).getLeito();
             default:
                 return null;
         }

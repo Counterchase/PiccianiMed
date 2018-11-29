@@ -37,15 +37,15 @@ import sun.swing.table.DefaultTableCellHeaderRenderer;
  *
  * @author IFMS
  */
-public class CadastroAdm extends javax.swing.JFrame {
+public final class CadastroAdm extends javax.swing.JFrame {
 
     private Connection conn;
 
     private List<Admin> Admins;
     private List<Clinica> Clinicas;
-    private List<Medico> medicos;
-    private List<Cliente> clientes;
-    
+    private List<Medico> Medicos;
+    private List<Cliente> Clientes;
+
     private List<Medico> lmedico;
     private List<Clinica> lclinica;
     private List<Admin> ladmin;
@@ -90,7 +90,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             tb.getColumnModel().getColumn(i).setCellRenderer(dtcr);
         }
     }
-    
+
     public void alinharTbClientes(JTable tb) {
         ClienteTableModel modeloCliente = new ClienteTableModel();
 
@@ -111,6 +111,7 @@ public class CadastroAdm extends javax.swing.JFrame {
         lclinica = new ArrayList<>();
         ladmin = new ArrayList<>();
         lcliente = new ArrayList<>();
+        lmedico = new ArrayList<>();
 
         conn = Banco.conecta();
         if (conn == null || conn.isClosed()) {
@@ -188,7 +189,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     }
 
     public List<Medico> listarTbMedico() throws SQLException {
-        medicos = new ArrayList<>();
+        Medicos = new ArrayList<>();
         conn = Banco.conecta();
         if (conn == null || conn.isClosed()) {
             System.out.println("erro ao conectar ao banco de dados");
@@ -217,22 +218,22 @@ public class CadastroAdm extends javax.swing.JFrame {
 
             a.setIdclinica(res.getInt("idclinica"));
             a.setIdadmin(res.getInt("idadmin"));
-            medicos.add(a);
+            Medicos.add(a);
         }
         stmt.close();
         conn.close();
-        return medicos;
+        return Medicos;
 
     }
-    
+
     public List<Cliente> listarTbCliente() throws SQLException {
-        clientes = new ArrayList<>();
+        Clientes = new ArrayList<>();
         conn = Banco.conecta();
         if (conn == null || conn.isClosed()) {
             System.out.println("erro ao conectar ao banco de dados");
             System.exit(-1);
         }
-        String sql = "SELECT idcliente, nome, cpf, rg, datanascimento, idclinica, idadmin FROM Cliente";
+        String sql = "SELECT idcliente, nome, cpf, rg, datanascimento, idclinica, idmedico FROM Cliente";
         System.out.println("sql: " + sql);
 
         //atravez desse objeto usamos comandos sql
@@ -255,18 +256,17 @@ public class CadastroAdm extends javax.swing.JFrame {
 
             a.setIdclinica(res.getInt("idclinica"));
             a.setIdmedico(res.getInt("idmedico"));
-            a.setIdleito(res.getInt("idleito"));
-            
-            clientes.add(a);
+
+
+            Clientes.add(a);
         }
         stmt.close();
         conn.close();
-        return clientes;
+        return Clientes;
 
     }
 
     /*==========================================================================================================================================*/
-    
  /*LISTAR CLINICA E ADMIN COMBO BOX =============================================================================================================*/
     public List<Admin> listarAdmins() throws SQLException {
 
@@ -315,7 +315,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             System.exit(-1);
         }
 
-        String sql = "SELECT idclinica, nome,cnpj, cidadeclinica FROM Clinica";
+        String sql = "SELECT idclinica, nome,cnpj, cidadeclinica, leito FROM Clinica";
 
         System.out.println("sql: " + sql);
         Statement stmt = conn.createStatement();
@@ -329,6 +329,7 @@ public class CadastroAdm extends javax.swing.JFrame {
             a.setNome(res.getString("nome"));
             a.setCnpj(res.getString("cnpj"));
             a.setCidadeclinica(res.getString("cidadeclinica"));
+          
 
             Clinicas.add(a);
 
@@ -336,10 +337,10 @@ public class CadastroAdm extends javax.swing.JFrame {
         return Clinicas;
 
     }
-    
-     public List<Medico> listarMedicos() throws SQLException {
 
-        List<Medico> Medicos = new ArrayList<>();
+    public List<Medico> listarMedicos() throws SQLException {
+
+        List<Medico> medicos = new ArrayList<>();
         conn = Banco.conecta();
         if (conn == null || conn.isClosed()) {
             System.out.println("erro ao conectar ao banco de dados");
@@ -355,10 +356,10 @@ public class CadastroAdm extends javax.swing.JFrame {
         ResultSet res = stmt.executeQuery(sql);
         while (res.next()) {
 
-            Medico a = new Medico();;
+            Medico a = new Medico();
             a.setIdmedico(res.getInt("idmedico"));
             a.setNome(res.getString("nome"));
-            a.setCpf(res.getString("cpf").toString());
+            a.setCpf(res.getString("cpf"));
             a.setCrm(res.getString("crm"));
 
             Calendar c = Calendar.getInstance();
@@ -382,7 +383,7 @@ public class CadastroAdm extends javax.swing.JFrame {
         lmedico = new ArrayList<>();
         lclinica = new ArrayList<>();
         ladmin = new ArrayList<>();
-        lcliente = new ArrayList<>();
+
 
         try {
             Admins = listarTbAdmin();
@@ -395,10 +396,16 @@ public class CadastroAdm extends javax.swing.JFrame {
             Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            medicos = listarTbMedico();
+            Medicos = listarTbMedico();
         } catch (SQLException ex) {
             Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            Clientes = listarTbCliente();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             lclinica = listarClinicas();
         } catch (SQLException ex) {
@@ -410,12 +417,13 @@ public class CadastroAdm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
-            clientes = listarTbCliente();
+            lmedico = listarMedicos();
         } catch (SQLException ex) {
             Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
         AdminTableModel modeloAdmin = new AdminTableModel();
         modeloAdmin.setListaAdmins(Admins);
@@ -430,13 +438,13 @@ public class CadastroAdm extends javax.swing.JFrame {
 
         //  alinharTbAdmins(tbAdmin);
         MedicoTableModel modeloMedico = new MedicoTableModel();
-        modeloMedico.setListamedicos(medicos);
+        modeloMedico.setListamedicos(Medicos);
 
         tbMedico.setModel(modeloMedico);
-        
+
         //  alinharTbAdmins(tbAdmin);
         ClienteTableModel modeloCliente = new ClienteTableModel();
-        modeloCliente.setListaClientes(clientes);
+        modeloCliente.setListaClientes(Clientes);
 
         tbCliente.setModel(modeloCliente);
 
@@ -449,13 +457,11 @@ public class CadastroAdm extends javax.swing.JFrame {
             combAdminMedico.addItem(ladmin.get(i));
 
         }
-        
+
         for (int i = 0; i < lmedico.size(); i++) {
             combMedicoCliente.addItem(lmedico.get(i));
 
         }
-        
-        medicos = new ArrayList<>();
 
         conn = Banco.conecta();
 
@@ -523,6 +529,8 @@ public class CadastroAdm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtCidadeClinica = new javax.swing.JTextField();
         btnCadastrarClinica = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        txtLeitoClinica = new javax.swing.JFormattedTextField();
         medico = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtDataNascimentoMedico = new org.jdesktop.swingx.JXDatePicker();
@@ -779,7 +787,7 @@ public class CadastroAdm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("<html><b>Cliente", null, Cliente, "Cadastre um Cliente\n");
+        jTabbedPane1.addTab("<html><b>Cliente", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/icons8-gestão-de-cliente-filled-24.png")), Cliente, "Cadastre um Cliente\n"); // NOI18N
 
         clinica.setBackground(new java.awt.Color(255, 255, 255));
         clinica.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -839,6 +847,10 @@ public class CadastroAdm extends javax.swing.JFrame {
             }
         });
 
+        jLabel25.setText("Leitos Disponiveis:");
+
+        txtLeitoClinica.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##"))));
+
         javax.swing.GroupLayout clinicaLayout = new javax.swing.GroupLayout(clinica);
         clinica.setLayout(clinicaLayout);
         clinicaLayout.setHorizontalGroup(
@@ -851,8 +863,16 @@ public class CadastroAdm extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCidadeClinica))
-                    .addComponent(btnCadastrarClinica)
-                    .addComponent(jLabel4)
+                    .addGroup(clinicaLayout.createSequentialGroup()
+                        .addComponent(btnCadastrarClinica)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel25)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtLeitoClinica, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(148, 148, 148))
+                    .addGroup(clinicaLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(clinicaLayout.createSequentialGroup()
                         .addComponent(btnExcluirClinica)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 517, Short.MAX_VALUE)
@@ -889,13 +909,16 @@ public class CadastroAdm extends javax.swing.JFrame {
                     .addComponent(btnExcluirClinica)
                     .addComponent(btnEditarClinica))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCadastrarClinica)
+                .addGroup(clinicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrarClinica)
+                    .addComponent(jLabel25)
+                    .addComponent(txtLeitoClinica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("<html>\n<b>Clínica</b>\n</html>", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/iconfinder_hospital-o_1608931 (1).png")), clinica, "Cadastre Clinicas\n"); // NOI18N
+        jTabbedPane1.addTab("<html> <b>Clínica</b> </html>", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/iconfinder_hospital-o_1608931 (1).png")), clinica, "Cadastre Clinicas\n"); // NOI18N
 
         medico.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1275,10 +1298,10 @@ public class CadastroAdm extends javax.swing.JFrame {
                 txtCpfMedico.setText(Mostrar);
                 txtCrmMedico.setText(Mostrar);
 
-                medicos = listarTbMedico();
+                Medicos = listarTbMedico();
 
                 MedicoTableModel modelo = new MedicoTableModel();
-                modelo.setListamedicos(medicos);
+                modelo.setListamedicos(Medicos);
 
                 tbMedico.setModel(modelo);
 
@@ -1335,9 +1358,9 @@ public class CadastroAdm extends javax.swing.JFrame {
                 txtCpfMedico.setText(Mostrar);
                 txtCrmMedico.setText(Mostrar);
 
-                medicos = listarTbMedico();
+                Medicos = listarTbMedico();
                 MedicoTableModel modelo = new MedicoTableModel();
-                modelo.setListamedicos(medicos);
+                modelo.setListamedicos(Medicos);
                 tbMedico.setModel(modelo);
             }
         } catch (SQLException ex) {
@@ -1377,9 +1400,9 @@ public class CadastroAdm extends javax.swing.JFrame {
                 txtCpfMedico.setText(Mostrar);
                 txtCrmMedico.setText(Mostrar);
 
-                medicos = listarTbMedico();
+                Medicos = listarTbMedico();
                 MedicoTableModel modelo = new MedicoTableModel();
-                modelo.setListamedicos(medicos);
+                modelo.setListamedicos(Medicos);
                 tbMedico.setModel(modelo);
             }
         } catch (SQLException ex) {
@@ -1609,14 +1632,15 @@ public class CadastroAdm extends javax.swing.JFrame {
             String nome = "'" + txtNomeClinica.getText() + "'";
             String cnpj = "'" + txtCnpjClinica.getText() + "'";
             String cidade = "'" + txtCidadeClinica.getText() + "'";
+            Integer leito = Integer.parseInt(txtLeitoClinica.getText());
 
             if (txtNomeClinica.getText().isEmpty() || txtCnpjClinica.getText().isEmpty() || txtCidadeClinica.getText().isEmpty()) {
 
                 JOptionPane.showMessageDialog(null, "Preencha Todos os Campos!!");
             } else {
 
-                String sql = "INSERT INTO Clinica (nome, cnpj, cidadeclinica) VALUES ("
-                        + "" + nome + "," + cnpj + "," + cidade + ")";
+                String sql = "INSERT INTO Clinica (nome, cnpj, cidadeclinica, leito) VALUES ("
+                        + "" + nome + "," + cnpj + "," + cidade + "," + leito + ")";
                 System.out.println("sql: " + sql);
 
                 //atravez desse objeto usamos comandos sql
@@ -1799,7 +1823,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarClienteActionPerformed
-      conn = Banco.conecta();
+        conn = Banco.conecta();
         String Mostrar = null;
         String sql = "";
 
@@ -1809,14 +1833,14 @@ public class CadastroAdm extends javax.swing.JFrame {
                 System.exit(-1);
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd");
             Date aux = txtDataNascimentoCliente.getDate();
 
             String nome = "'" + txtNomeCliente.getText() + "'";
             String rg = "'" + txtRgCliente.getText() + "'";
             String cpf = "'" + txtCpfCliente.getText() + "'";
 
-            String dataNasc = "'" + sdf.format(aux) + "'";
+            String dataNasc = "'" + sdf1.format(aux) + "'";
             if (txtNomeCliente.getText().isEmpty() || txtRgCliente.getText().isEmpty() || txtCpfCliente.getText().isEmpty()) {
 
                 JOptionPane.showMessageDialog(null, "Preencha Todos os Campos!!");
@@ -1845,10 +1869,10 @@ public class CadastroAdm extends javax.swing.JFrame {
                 txtCpfCliente.setText(Mostrar);
                 txtRgCliente.setText(Mostrar);
 
-               clientes = listarTbCliente();
+                Clientes = listarTbCliente();
 
-               ClienteTableModel modelo = new ClienteTableModel();
-                modelo.setListaClientes(clientes);
+                ClienteTableModel modelo = new ClienteTableModel();
+                modelo.setListaClientes(Clientes);
 
                 tbCliente.setModel(modelo);
 
@@ -1860,7 +1884,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarClienteActionPerformed
 
     private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
-       conn = Banco.conecta();
+        conn = Banco.conecta();
 
         try {
             if (conn == null || conn.isClosed()) {
@@ -1897,9 +1921,9 @@ public class CadastroAdm extends javax.swing.JFrame {
                 txtCpfCliente.setText(Mostrar);
                 txtRgCliente.setText(Mostrar);
 
-                clientes = listarTbCliente();
+                Clientes = listarTbCliente();
                 ClienteTableModel modelo = new ClienteTableModel();
-                modelo.setListaClientes(clientes);
+                modelo.setListaClientes(Clientes);
                 tbCliente.setModel(modelo);
             }
         } catch (SQLException ex) {
@@ -1920,7 +1944,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDataNascimentoClienteActionPerformed
 
     private void btnExcluirClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirClienteActionPerformed
-   
+
         conn = Banco.conecta();
 
         try {
@@ -1951,9 +1975,9 @@ public class CadastroAdm extends javax.swing.JFrame {
                 txtCpfCliente.setText(Mostrar);
                 txtRgCliente.setText(Mostrar);
 
-                clientes = listarTbCliente();
+                Clientes = listarTbCliente();
                 ClienteTableModel modelo = new ClienteTableModel();
-                modelo.setListaClientes(clientes);
+                modelo.setListaClientes(Clientes);
                 tbCliente.setModel(modelo);
             }
         } catch (SQLException ex) {
@@ -2051,6 +2075,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2075,6 +2100,7 @@ public class CadastroAdm extends javax.swing.JFrame {
     private javax.swing.JTextField txtCrmMedico;
     private org.jdesktop.swingx.JXDatePicker txtDataNascimentoCliente;
     private org.jdesktop.swingx.JXDatePicker txtDataNascimentoMedico;
+    private javax.swing.JFormattedTextField txtLeitoClinica;
     private javax.swing.JTextField txtLoginAdmin;
     private javax.swing.JTextField txtNomeAdmin;
     private javax.swing.JTextField txtNomeCliente;
