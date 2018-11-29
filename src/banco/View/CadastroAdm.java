@@ -159,7 +159,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
             System.exit(-1);
         }
 
-        String sql = "SELECT idclinica, nome, cnpj, cidadeclinica FROM Clinica";
+        String sql = "SELECT idclinica, nome, cnpj, cidadeclinica, leito FROM Clinica";
         System.out.println("sql: " + sql);
 
         //atravez desse objeto usamos comandos sql
@@ -179,6 +179,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
             a.setNome(res.getString("nome"));
             a.setCnpj(res.getString("cnpj"));
             a.setCidadeclinica(res.getString("cidadeclinica"));
+            a.setLeito(Integer.valueOf(res.getInt("leito")));
 
             Clinicas.add(a);
         }
@@ -450,6 +451,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
 
         for (int i = 0; i < lclinica.size(); i++) {
             combClinicaMedico.addItem(lclinica.get(i));
+             combClinicaCliente.addItem(lclinica.get(i));
 
         }
 
@@ -850,6 +852,11 @@ public final class CadastroAdm extends javax.swing.JFrame {
         jLabel25.setText("Leitos Disponiveis:");
 
         txtLeitoClinica.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##"))));
+        txtLeitoClinica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLeitoClinicaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout clinicaLayout = new javax.swing.GroupLayout(clinica);
         clinica.setLayout(clinicaLayout);
@@ -1996,6 +2003,10 @@ public final class CadastroAdm extends javax.swing.JFrame {
     private void combMedicoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combMedicoClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_combMedicoClienteActionPerformed
+
+    private void txtLeitoClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLeitoClinicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLeitoClinicaActionPerformed
 
     /**
      * @param args the command line arguments

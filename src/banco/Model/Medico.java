@@ -84,5 +84,9 @@ public class Medico {
     public void setData_nascimento(Calendar data_nascimento) {
         this.datanascimento = datanascimento;
     }
+    @Override
+    public String toString() {
+        return getNome();
+    }
 
 }
