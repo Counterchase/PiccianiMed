@@ -654,7 +654,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
         jLabel21.setText("Medico:");
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel22.setText("Cadastro de Clientes");
+        jLabel22.setText("Cadastro de Pacientes");
 
         txtDataNascimentoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -789,7 +789,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("<html><b>Cliente", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/icons8-gestão-de-cliente-filled-24.png")), Cliente, "Cadastre um Cliente\n"); // NOI18N
+        jTabbedPane1.addTab("<html><b>Paciente", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/icons8-gestão-de-cliente-filled-24.png")), Cliente, "Cadastre um Cliente\n"); // NOI18N
 
         clinica.setBackground(new java.awt.Color(255, 255, 255));
         clinica.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
