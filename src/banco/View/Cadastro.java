@@ -940,7 +940,7 @@ public final class Cadastro extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("<html><b>Paciente", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/icons8-gestão-de-cliente-filled-24.png")), Cliente, "Cadastre um Cliente\n"); // NOI18N
+        jTabbedPane1.addTab("<html><b>Paciente", new javax.swing.ImageIcon(getClass().getResource("/banco/IMG/icons8-gestão-de-cliente-filled-24.png")), Cliente, "Cadastre um Paciente"); // NOI18N
 
         clinica.setBackground(new java.awt.Color(255, 255, 255));
         clinica.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
