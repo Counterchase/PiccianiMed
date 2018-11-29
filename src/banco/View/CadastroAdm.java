@@ -242,6 +242,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
 
         //select
         ResultSet res = stmt.executeQuery(sql);
+        int countClientes = 0;
 
         while (res.next()) {
 
@@ -258,14 +259,16 @@ public final class CadastroAdm extends javax.swing.JFrame {
             a.setIdclinica(res.getInt("idclinica"));
             a.setIdmedico(res.getInt("idmedico"));
 
-
             Clientes.add(a);
+            countClientes++;
         }
         stmt.close();
         conn.close();
         return Clientes;
 
     }
+    
+     
 
     /*==========================================================================================================================================*/
  /*LISTAR CLINICA E ADMIN COMBO BOX =============================================================================================================*/
@@ -330,7 +333,6 @@ public final class CadastroAdm extends javax.swing.JFrame {
             a.setNome(res.getString("nome"));
             a.setCnpj(res.getString("cnpj"));
             a.setCidadeclinica(res.getString("cidadeclinica"));
-          
 
             Clinicas.add(a);
 
@@ -385,7 +387,6 @@ public final class CadastroAdm extends javax.swing.JFrame {
         lclinica = new ArrayList<>();
         ladmin = new ArrayList<>();
 
-
         try {
             Admins = listarTbAdmin();
         } catch (SQLException ex) {
@@ -425,7 +426,6 @@ public final class CadastroAdm extends javax.swing.JFrame {
             Logger.getLogger(CadastroAdm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
         AdminTableModel modeloAdmin = new AdminTableModel();
         modeloAdmin.setListaAdmins(Admins);
 
@@ -451,7 +451,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
 
         for (int i = 0; i < lclinica.size(); i++) {
             combClinicaMedico.addItem(lclinica.get(i));
-             combClinicaCliente.addItem(lclinica.get(i));
+            combClinicaCliente.addItem(lclinica.get(i));
 
         }
 
@@ -1312,6 +1312,14 @@ public final class CadastroAdm extends javax.swing.JFrame {
 
                 tbMedico.setModel(modelo);
 
+                combMedicoCliente.removeAllItems();
+
+                lmedico = listarMedicos();
+
+                for (int i = 0; i < lmedico.size(); i++) {
+                    combMedicoCliente.addItem(lmedico.get(i));
+                }
+
                 //   alinharTbMedicos(tbMedico);
             }
         } catch (SQLException ex) {
@@ -1667,6 +1675,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
                 txtNomeClinica.setText(Mostrar);
                 txtCnpjClinica.setText(Mostrar);
                 txtCidadeClinica.setText(Mostrar);
+                txtLeitoClinica.setText(Mostrar);
 
                 Clinicas = listarTbClinica();
 
@@ -1676,11 +1685,13 @@ public final class CadastroAdm extends javax.swing.JFrame {
                 tbClinica.setModel(modelo);
 
                 combClinicaMedico.removeAllItems();
+                combClinicaCliente.removeAllItems();
 
                 lclinica = listarClinicas();
 
                 for (int i = 0; i < lclinica.size(); i++) {
                     combClinicaMedico.addItem(lclinica.get(i));
+                    combClinicaCliente.addItem(lclinica.get(i));
 
                 }
             }
@@ -1833,6 +1844,7 @@ public final class CadastroAdm extends javax.swing.JFrame {
         conn = Banco.conecta();
         String Mostrar = null;
         String sql = "";
+        String sql2= "";
 
         try {
             if (conn == null || conn.isClosed()) {
@@ -1848,6 +1860,10 @@ public final class CadastroAdm extends javax.swing.JFrame {
             String cpf = "'" + txtCpfCliente.getText() + "'";
 
             String dataNasc = "'" + sdf1.format(aux) + "'";
+            Integer idclinica = ((Clinica)combClinicaCliente.getSelectedItem()).getIdclinica();
+            Integer idmedico = ((Medico) combMedicoCliente.getSelectedItem()).getIdmedico();
+            
+            
             if (txtNomeCliente.getText().isEmpty() || txtRgCliente.getText().isEmpty() || txtCpfCliente.getText().isEmpty()) {
 
                 JOptionPane.showMessageDialog(null, "Preencha Todos os Campos!!");
@@ -1856,13 +1872,17 @@ public final class CadastroAdm extends javax.swing.JFrame {
                 Statement stmt = conn.createStatement();
 
                 sql = "INSERT INTO Cliente (nome,rg, cpf, datanascimento, idclinica, idmedico ) VALUES ("
-                        + "" + nome + "," + rg + "," + cpf + "," + dataNasc + "," + ((Clinica) combClinicaMedico.getSelectedItem()).getIdclinica() + ","
-                        + " " + ((Medico) combMedicoCliente.getSelectedItem()).getIdmedico() + ")";
+                        + "" + nome + "," + rg + "," + cpf + "," + dataNasc + "," + idclinica + ","
+                        + " " + idmedico + ")";
+                // subtraindo quantidade de leitos da clinica onde o clinete foi cadastrado
+                sql2 = "UPDATE clinica SET leito = leito -1 WHERE idclinica = " + idclinica + "";
+                
                 System.out.println("sql: " + sql);
 
                 //atravez desse objeto usamos comandos sql
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
+                stmt.executeUpdate(sql2);
                 //select
                 //stmt.executeQuery(sql);
                 //retorna um conjunto de dados , sempre q for fazer insert usar o executeUpdate : inset, update, delete
@@ -1877,13 +1897,23 @@ public final class CadastroAdm extends javax.swing.JFrame {
                 txtRgCliente.setText(Mostrar);
 
                 Clientes = listarTbCliente();
+                
+               
+                
 
                 ClienteTableModel modelo = new ClienteTableModel();
                 modelo.setListaClientes(Clientes);
 
                 tbCliente.setModel(modelo);
+                
+                Clinicas = listarTbClinica();
 
-                //   alinharTbMedicos(tbMedico);
+                ClinicaTableModel modelo2 = new ClinicaTableModel();
+                modelo2.setListaClinicas(Clinicas);
+
+                tbClinica.setModel(modelo2);
+                
+                              //   alinharTbMedicos(tbMedico);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
@@ -1967,10 +1997,13 @@ public final class CadastroAdm extends javax.swing.JFrame {
             } else {
                 // System.out.println(k);
                 int i = ((ClienteTableModel) tbCliente.getModel()).getListaClientes().get(k).getIdcliente();
+                int j = ((ClienteTableModel) tbCliente.getModel()).getListaClientes().get(k).getIdclinica();
 
                 Statement stmt = conn.createStatement();
                 String sql = "Delete from cliente where idcliente = " + i + " ";
+                String sql2 = "UPDATE clinica SET leito = leito +1 WHERE idclinica = " + j + "";
                 stmt.executeUpdate(sql);
+                stmt.executeUpdate(sql2);
 
                 stmt.close();
                 conn.close();
@@ -1986,6 +2019,11 @@ public final class CadastroAdm extends javax.swing.JFrame {
                 ClienteTableModel modelo = new ClienteTableModel();
                 modelo.setListaClientes(Clientes);
                 tbCliente.setModel(modelo);
+                
+                Clinicas = listarTbClinica();
+                ClinicaTableModel modelo2 = new ClinicaTableModel();
+                modelo2.setListaClinicas(Clinicas);
+                tbClinica.setModel(modelo2);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CadastroMedico.class.getName()).log(Level.SEVERE, null, ex);
